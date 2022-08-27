@@ -356,11 +356,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\MyProjects\\SignalR Sample\\Backend\\SignalR\\SignalR\\SignalR.csproj",
+      "projectUniqueName": "D:\\Projects\\MyProjects\\SignalR Example\\Backend\\SignalR\\SignalR\\SignalR.csproj",
       "projectName": "SignalR",
-      "projectPath": "D:\\Projects\\MyProjects\\SignalR Sample\\Backend\\SignalR\\SignalR\\SignalR.csproj",
+      "projectPath": "D:\\Projects\\MyProjects\\SignalR Example\\Backend\\SignalR\\SignalR\\SignalR.csproj",
       "packagesPath": "C:\\Users\\Evgeni\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\MyProjects\\SignalR Sample\\Backend\\SignalR\\SignalR\\obj\\",
+      "outputPath": "D:\\Projects\\MyProjects\\SignalR Example\\Backend\\SignalR\\SignalR\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Evgeni\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yg+GBKGtZyc4mXPiX+aVRbVmHU1aKkbJz7fHT/IV2Huo6/f8IwufzrUsMcPvDgU33uYWr0WIAEnkkJ6GFcngzQ==",
+  "dgSpecHash": "S269Dw3bxy4vbQhty7kYIMAKwGnMKyHsVgWyqXh3zYmIkzNcsuQpOmgWrL1o34pLpcwuemEQqtMvuuMlYWXWUQ==",
   "success": true,
-  "projectFilePath": "D:\\Projects\\MyProjects\\SignalR Sample\\Backend\\SignalR\\SignalR\\SignalR.csproj",
+  "projectFilePath": "D:\\Projects\\MyProjects\\SignalR Example\\Backend\\SignalR\\SignalR\\SignalR.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Evgeni\\.nuget\\packages\\mediatr\\10.0.1\\mediatr.10.0.1.nupkg.sha512",
     "C:\\Users\\Evgeni\\.nuget\\packages\\mediatr.contracts\\1.0.1\\mediatr.contracts.1.0.1.nupkg.sha512",
