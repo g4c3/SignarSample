@@ -3,38 +3,13 @@ using System.Collections.Concurrent;
 
 namespace SignalR.Hub
 {
-    public class GroupManager
+    public class HubGroupManager : IHubGroupManager
     {
         private readonly ConcurrentDictionary<string, HashSet<string>> _groups;
         private readonly object _groupsLock = new();
-        public GroupManager()
+        public HubGroupManager()
         {
             _groups = _groups is null ? new()! : _groups;
-        }
-        public async Task CreateGroupAsync(IGroupManager groups, string connectionId, string groupName, CancellationToken cancellationToken = default)
-        {            
-            if (!GroupExists(groupName))
-            {
-                lock (_groupsLock)
-                {
-                    _groups.TryAdd(groupName, new HashSet<string>() { connectionId });
-                }
-                await groups.AddToGroupAsync(connectionId, groupName, cancellationToken);
-            }
-            //what if the group already exists
-        }
-
-        public async Task RemoveGroupAsync(IGroupManager groups, string connectionId, string groupName, CancellationToken cancellationToken = default)
-        {
-            if (GroupExists(groupName))
-            {
-                lock (_groupsLock)
-                {
-                    _groups.TryRemove(new KeyValuePair<string, HashSet<string>> (groupName, new HashSet<string>() { connectionId } ));
-
-                }
-                await groups.RemoveFromGroupAsync(connectionId, groupName, cancellationToken);
-            }
         }
 
         public async Task AddToGroupAsync(IGroupManager groups, string connectionId, string groupName, CancellationToken cancellationToken = default)
@@ -64,6 +39,11 @@ namespace SignalR.Hub
                     }
                 }
             }
+        }
+
+        public List<string> GetGroups()
+        {
+            return _groups.Keys.ToList();
         }
 
         public bool GroupExists(string groupName)

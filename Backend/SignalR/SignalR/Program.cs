@@ -1,4 +1,5 @@
 using MediatR;
+using SignalR.Hub;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +15,10 @@ services.AddSignalR(hubOptions =>
 });
 
 //services.AddScoped<INotificationService, NotificationService>();
-//services.AddSingleton<ISTMessagingHub, STMessagingHub>();
-//services.AddSingleton<IDynamicHub, DynamicMessagingHub>();
+services.AddSingleton<IHubGroupManager, HubGroupManager>();
+//services.AddSingleton<IComunicationHub, ComunicationHub>();
+services.AddSingleton<ComunicationHub>();
+services.AddSingleton<INotificationService, NotificationService>();
 
 services
     .AddMediatR(Assembly.GetExecutingAssembly())
@@ -37,7 +40,7 @@ services
 services.AddEndpointsApiExplorer();
 
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 if (!app.Environment.IsDevelopment()) 
 {
@@ -55,8 +58,7 @@ app.UseRouting()
     .UseEndpoints(endpoints =>
     {
         endpoints.MapControllers();
-        //endpoints.MapHub<STMessagingHub>(ISTMessagingHub.Endpoint);
-        //endpoints.MapHub<DynamicMessagingHub>(IDynamicHub.Endpoint);
+        endpoints.MapHub<ComunicationHub>(ComunicationHub.Endpoint);
     });
 
 app.Run();

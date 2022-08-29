@@ -35,12 +35,17 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useSignalR } from '@quangdao/vue-signalr';
 
 export default defineComponent({
   name: 'HelloWorld',
   props: {
     msg: String,
   },
+  setup() {
+    const signalr = useSignalR();
+    console.log("starting connection");
+  }
 });
 </script>
 
