@@ -48,27 +48,21 @@ namespace SignalR.Hub
             return Task.CompletedTask;
         }
 
-        public async Task AddToGroup(string groupName)
-        {
+        public async Task AddToGroup(string groupName) =>
             await _hubGroupManager.AddToGroupAsync(_hubContext.Groups, Context.ConnectionId, groupName);
-        }
+        
 
-        public async Task RemoveFromGroup(string groupName)
-        {
+        public async Task RemoveFromGroup(string groupName) =>
             await _hubGroupManager.RemoveFromGroupAsync(_hubContext.Groups, Context.ConnectionId, groupName);
-        }
+        
   
-        public override async Task OnConnectedAsync()
-        {
+        public override async Task OnConnectedAsync() =>
             await base.OnConnectedAsync();
-        }
 
-        public override async Task OnDisconnectedAsync(Exception? exception)
-        {
+        public override async Task OnDisconnectedAsync(Exception? exception) =>
             await base.OnDisconnectedAsync(exception);
-        }
 
-        public List<string> GetAllGroups()
+        public IEnumerable<string> GetAllGroups()
         {
             IGroupManager groupManager = _hubContext.Groups;
 
@@ -84,7 +78,7 @@ namespace SignalR.Hub
                 .Single(fi => fi.Name == "_groups")
                 .GetValue(groupsObject) as IDictionary;
 
-            List<string> groupNames = groupsDictionary!.Keys.Cast<string>().ToList();
+            var groupNames = groupsDictionary!.Keys.Cast<string>();
 
             return groupNames;
         } 

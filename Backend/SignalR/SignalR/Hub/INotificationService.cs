@@ -2,6 +2,10 @@
 {
     public interface INotificationService
     {
-        Task<List<string>> AddOrCreateGroup(string groupName);
+        Task CreateOrAddToExistingGroup(string groupName);
+        Task LeaveGroup(string groupName);
+        IEnumerable<string> GetAllGroups();
+
+
     }
 }

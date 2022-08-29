@@ -9,11 +9,13 @@
             _comunicationHub = comunicationHub;
         }
 
-        public async Task<List<string>> AddOrCreateGroup(string groupName)
-        {
+        public async Task CreateOrAddToExistingGroup(string groupName) =>
             await _comunicationHub.AddToGroup(groupName);
-            var groups = _comunicationHub.GetAllGroups();
-            return groups;
-        }
+
+        public async Task LeaveGroup(string groupName) =>
+            await _comunicationHub.RemoveFromGroup(groupName);
+
+        public IEnumerable<string> GetAllGroups() =>
+            _comunicationHub.GetAllGroups();
     }
 }
