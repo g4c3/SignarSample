@@ -1,11 +1,11 @@
 ﻿using MediatR;
-using SignalR.Hub;
+using SignalR.Services;
 
-namespace SignalR.Handlers
+namespace SignalR.Handlers.Group
 {
     public class GetAllGroups
     {
-        public class Request : IRequest<Response>{}
+        public class Request : IRequest<Response> { }
 
         public class Response
         {

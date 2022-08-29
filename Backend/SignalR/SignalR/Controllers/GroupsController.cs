@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SignalR.Handlers;
+using SignalR.Handlers.Group;
 
 namespace SignalR.Controllers
 {

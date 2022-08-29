@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using SignalR.Hub.Groups;
 using System.Collections;
 using System.Reflection;
 
@@ -14,6 +15,14 @@ namespace SignalR.Hub
             _hubContext = hubContext;
             _hubGroupManager = hubGroupManager;
         }
+
+        public override async Task OnConnectedAsync() =>
+            await base.OnConnectedAsync();
+
+        public override async Task OnDisconnectedAsync(Exception? exception) =>
+            await base.OnDisconnectedAsync(exception);
+
+
         public Task SendMessageToUser(string connectionId, string message)
         {
             _hubContext.Clients.User(connectionId).MessageToUser(message);
@@ -35,7 +44,9 @@ namespace SignalR.Hub
             
             return Task.CompletedTask;
         }
-        public Task SendMessageToGroup(string message, string groupName)
+
+
+        public Task SendMessageToGroup(string groupName, string message)
         {
             _hubContext.Clients.Group(groupName).MessageToGroup(message);
 
@@ -48,6 +59,8 @@ namespace SignalR.Hub
             return Task.CompletedTask;
         }
 
+
+
         public async Task AddToGroup(string groupName) =>
             await _hubGroupManager.AddToGroupAsync(_hubContext.Groups, Context.ConnectionId, groupName);
         
@@ -56,11 +69,6 @@ namespace SignalR.Hub
             await _hubGroupManager.RemoveFromGroupAsync(_hubContext.Groups, Context.ConnectionId, groupName);
         
   
-        public override async Task OnConnectedAsync() =>
-            await base.OnConnectedAsync();
-
-        public override async Task OnDisconnectedAsync(Exception? exception) =>
-            await base.OnDisconnectedAsync(exception);
 
         public IEnumerable<string> GetAllGroups()
         {

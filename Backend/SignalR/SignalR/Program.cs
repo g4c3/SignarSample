@@ -1,5 +1,7 @@
 using MediatR;
 using SignalR.Hub;
+using SignalR.Hub.Groups;
+using SignalR.Services;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);

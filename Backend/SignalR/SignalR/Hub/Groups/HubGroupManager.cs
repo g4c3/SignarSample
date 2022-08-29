@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
 
-namespace SignalR.Hub
+namespace SignalR.Hub.Groups
 {
     public class HubGroupManager : IHubGroupManager
     {
