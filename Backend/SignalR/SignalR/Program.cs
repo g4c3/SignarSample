@@ -5,6 +5,7 @@ using SignalR.Services;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
 var services = builder.Services;
 
 const string corsAlllowedOrigin = "CorsAllowedOrigins";
@@ -16,11 +17,10 @@ services.AddSignalR(hubOptions =>
     hubOptions.EnableDetailedErrors = true;
 });
 
-//services.AddScoped<INotificationService, NotificationService>();
+services.AddScoped<INotificationService, NotificationService>();
 services.AddSingleton<IHubGroupManager, HubGroupManager>();
-//services.AddSingleton<IComunicationHub, ComunicationHub>();
-services.AddSingleton<ComunicationHub>();
-services.AddSingleton<INotificationService, NotificationService>();
+//services.AddSingleton<ComunicationHub>();
+services.AddSingleton<IComunicationHub, ComunicationHub>();
 
 services
     .AddMediatR(Assembly.GetExecutingAssembly())
@@ -54,6 +54,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+//app.Use(async (context, next) => {
+//    var hubContext = context.RequestServices.GetRequiredService<IComunicationHub>();
+//    if(next != null)
+//    {
+//        await next.Invoke();
+//    }
+//});
+
 
 app.UseRouting()
     .UseCors(corsAlllowedOrigin)

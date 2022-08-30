@@ -58,3 +58,6 @@ D:\Projects\MyProjects\SignalR Example\Backend\SignalR\SignalR\obj\Debug\net7.0\
 D:\Projects\MyProjects\SignalR Example\Backend\SignalR\SignalR\obj\Debug\net7.0\SignalR.pdb
 D:\Projects\MyProjects\SignalR Example\Backend\SignalR\SignalR\obj\Debug\net7.0\SignalR.genruntimeconfig.cache
 D:\Projects\MyProjects\SignalR Example\Backend\SignalR\SignalR\obj\Debug\net7.0\ref\SignalR.dll
+D:\Projects\MyProjects\SignalR Example\Backend\SignalR\SignalR\bin\Debug\net7.0\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\Projects\MyProjects\SignalR Example\Backend\SignalR\SignalR\bin\Debug\net7.0\Microsoft.Extensions.Configuration.Binder.dll
+D:\Projects\MyProjects\SignalR Example\Backend\SignalR\SignalR\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll

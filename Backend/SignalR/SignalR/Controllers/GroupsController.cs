@@ -16,24 +16,25 @@ namespace SignalR.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetGroups()
+        public async Task<IActionResult> GetGroups(CancellationToken cancellationToken)
         {
-            var response = await _sender.Send(new GetAllGroups.Request { });
+            var response = await _sender.Send(new GetAllGroups.Request { }, cancellationToken);
 
             return Ok(response);
         }
 
-        [HttpPost("{groupName}/CreateGroup")]
-        public async Task<IActionResult> CreateGroup([FromRoute] string groupName)
+        [HttpPost("CreateGroup")]
+        public async Task<IActionResult> CreateGroup([FromBody] CreateGroup.Request request, CancellationToken cancellationToken)
         {
-            var response = await _sender.Send(new CreateGroup.Request { GroupName = groupName });
+            var response = await _sender.Send(request, cancellationToken);
 
             return Ok(response);
         }
-        [HttpDelete("{groupName}/LeaveGroup")]
-        public async Task<IActionResult> LeaveGroup([FromRoute] string groupName)
+
+        [HttpDelete("LeaveGroup")]
+        public async Task<IActionResult> LeaveGroup([FromBody] LeaveGroup.Request request, CancellationToken cancellationToken)
         {
-            var response = await _sender.Send(new LeaveGroup.Request { GroupName = groupName });
+            var response = await _sender.Send(request, cancellationToken);
 
             return Ok(response);
         }

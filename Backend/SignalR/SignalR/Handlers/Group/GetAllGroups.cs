@@ -5,6 +5,7 @@ namespace SignalR.Handlers.Group
 {
     public class GetAllGroups
     {
+        //how to avoid empty request object?
         public class Request : IRequest<Response> { }
 
         public class Response

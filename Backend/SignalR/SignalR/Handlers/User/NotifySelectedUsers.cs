@@ -1,17 +1,20 @@
 ﻿using MediatR;
 using SignalR.Hub;
+using System.ComponentModel.DataAnnotations;
 
 namespace SignalR.Handlers.User
 {
     public class NotifySelectedUsers
     {
-        public class Request : IRequest<Response>
+        public class Request : IRequest<Unit>
         {
-            public List<string>? UserIds { get; set; }
+            [Required]
+            public IEnumerable<string>? UserIds { get; set; }
+            [Required]
             public string? Message { get; set; }
         }
-        public class Response { }
-        public class RequestHandler : IRequestHandler<Request, Response>
+
+        public class RequestHandler : IRequestHandler<Request, Unit>
         {
             private readonly ComunicationHub _communicationHub;
             public RequestHandler(ComunicationHub communicationHub)
@@ -19,10 +22,10 @@ namespace SignalR.Handlers.User
                 _communicationHub = communicationHub;
             }
 
-            public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
                 await _communicationHub.SendMessageToUsers(request.UserIds!, request.Message!);
-                return await Task.FromResult(new Response());
+                return await Task.FromResult(Unit.Value);
             }
         }
     }

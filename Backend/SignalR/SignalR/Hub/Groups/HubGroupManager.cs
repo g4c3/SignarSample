@@ -41,10 +41,8 @@ namespace SignalR.Hub.Groups
             }
         }
 
-        public List<string> GetGroups()
-        {
-            return _groups.Keys.ToList();
-        }
+        public List<string> GetGroups() => 
+            _groups.Keys.ToList();
 
         public bool GroupExists(string groupName)
             => _groups.ContainsKey(groupName);

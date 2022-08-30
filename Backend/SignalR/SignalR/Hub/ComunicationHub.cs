@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace SignalR.Hub
 {
-    public class ComunicationHub : Hub<IClientMethods>//, IComunicationHub
+    public class ComunicationHub : Hub<IClientMethods>, IComunicationHub
     {
         private readonly IHubContext<ComunicationHub, IClientMethods> _hubContext;
         private readonly IHubGroupManager _hubGroupManager;
@@ -29,18 +29,15 @@ namespace SignalR.Hub
 
             return Task.CompletedTask;
         }
-        public Task SendMessageToUsers(List<string> connectionIds, string message)
+        public Task SendMessageToUsers(IEnumerable<string> connectionIds, string message)
         {
             _hubContext.Clients.Users(connectionIds).MessageToUser(message);
 
             return Task.CompletedTask;
         }
-        public Task SendMessageToAllUsers(string message, string? exception)
+        public Task SendMessageToAllUsers(string message)
         {
-            if (!String.IsNullOrWhiteSpace(exception))
-                _hubContext.Clients.AllExcept(exception).MessageToAllUsers(message, null);
-            else
-                _hubContext.Clients.All.MessageToUser(message);
+            _hubContext.Clients.AllExcept(Context.ConnectionId).MessageToAllUsers(message);
             
             return Task.CompletedTask;
         }
@@ -52,23 +49,29 @@ namespace SignalR.Hub
 
             return Task.CompletedTask;
         }
-        public Task SendMessageToGroups(string message, List<string> groupNames)
+        public Task SendMessageToGroups(IEnumerable<string> groupNames, string message)
         {
             _hubContext.Clients.Groups(groupNames).MessageToGroup(message);
 
             return Task.CompletedTask;
         }
 
-
-
-        public async Task AddToGroup(string groupName) =>
-            await _hubGroupManager.AddToGroupAsync(_hubContext.Groups, Context.ConnectionId, groupName);
+        public async Task AddToGroup(string groupName)
+        {
+            if (Context != null)
+                await _hubGroupManager.AddToGroupAsync(_hubContext.Groups, Context.ConnectionId, groupName);
+            else
+                throw new ArgumentException(message: "There are no active connections established with the hub");
+        }
         
-
-        public async Task RemoveFromGroup(string groupName) =>
-            await _hubGroupManager.RemoveFromGroupAsync(_hubContext.Groups, Context.ConnectionId, groupName);
-        
-  
+        public async Task RemoveFromGroup(string groupName)
+        {
+            if (Context != null)
+                await _hubGroupManager.RemoveFromGroupAsync(_hubContext.Groups, Context.ConnectionId, groupName);
+            else
+                throw new ArgumentException(message: "There are no active connections established with the hub");
+        }
+          
 
         public IEnumerable<string> GetAllGroups()
         {
