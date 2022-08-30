@@ -41,7 +41,6 @@ services
     .AddControllers();
 services.AddEndpointsApiExplorer();
 
-
 WebApplication app = builder.Build();
 
 if (!app.Environment.IsDevelopment()) 

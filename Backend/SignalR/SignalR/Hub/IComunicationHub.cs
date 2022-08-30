@@ -1,6 +1,6 @@
 ﻿namespace SignalR.Hub
 {
-    public interface IComunicationHub : IHub
+    public interface IComunicationHub
     {
         Task SendMessageToUser(string connectionId, string message);
         Task SendMessageToUsers(IEnumerable<string> connectionIds, string message);
