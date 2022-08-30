@@ -1,8 +1,7 @@
-using MediatR;
-using SignalR.Hub;
-using SignalR.Hub.Groups;
-using SignalR.Services;
-using System.Reflection;
+using Api.Hub;
+using Api.Hub.Groups;
+using Application;
+using Application.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,18 +11,17 @@ const string corsAlllowedOrigin = "CorsAllowedOrigins";
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// *Add Messaging*
 services.AddSignalR(hubOptions =>
 {
     hubOptions.EnableDetailedErrors = true;
 });
 
-services.AddScoped<INotificationService, NotificationService>();
 services.AddSingleton<IHubGroupManager, HubGroupManager>();
-//services.AddSingleton<ComunicationHub>();
 services.AddSingleton<IComunicationHub, ComunicationHub>();
 
 services
-    .AddMediatR(Assembly.GetExecutingAssembly())
+    .AddApplication()
     .AddCors(options =>
         options.AddPolicy(corsAlllowedOrigin, policyBuilder =>
             policyBuilder.WithOrigins(builder.Configuration
@@ -39,6 +37,7 @@ services
     })
     .AddRouting(options => options.LowercaseUrls = true)
     .AddControllers();
+
 services.AddEndpointsApiExplorer();
 
 WebApplication app = builder.Build();
@@ -53,13 +52,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//app.Use(async (context, next) => {
-//    var hubContext = context.RequestServices.GetRequiredService<IComunicationHub>();
-//    if(next != null)
-//    {
-//        await next.Invoke();
-//    }
-//});
 
 
 app.UseRouting()

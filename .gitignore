@@ -18,3 +18,9 @@ Logs/
 *.user
 *.ncrunchsolution
 _NCrunch_*/
+Backend/SignalR/.vs
+Backend/SignalR/SignalR/bin
+Backend/SignalR/SignalR/obj
+Backend/SignalR/.vs
+Backend/SignalR/SignalR/bin
+Backend/SignalR/SignalR/obj

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace SignalR.Hub.Groups
+namespace Api.Hub.Groups
 {
     public interface IHubGroupManager
     {

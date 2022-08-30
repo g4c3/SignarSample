@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
 
-namespace SignalR.Hub.Groups
+namespace Api.Hub.Groups
 {
     public class HubGroupManager : IHubGroupManager
     {
@@ -41,7 +41,7 @@ namespace SignalR.Hub.Groups
             }
         }
 
-        public List<string> GetGroups() => 
+        public List<string> GetGroups() =>
             _groups.Keys.ToList();
 
         public bool GroupExists(string groupName)

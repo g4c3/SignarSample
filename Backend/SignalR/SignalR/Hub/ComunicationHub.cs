@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using SignalR.Hub.Groups;
+﻿using Api.Hub.Groups;
+using Application.Interfaces;
+using Microsoft.AspNetCore.SignalR;
 using System.Collections;
 using System.Reflection;
 
-namespace SignalR.Hub
+namespace Api.Hub
 {
     public class ComunicationHub : Hub<IClientMethods>, IComunicationHub
     {
@@ -38,7 +39,7 @@ namespace SignalR.Hub
         public Task SendMessageToAllUsers(string message)
         {
             _hubContext.Clients.AllExcept(Context.ConnectionId).MessageToAllUsers(message);
-            
+
             return Task.CompletedTask;
         }
 
@@ -63,7 +64,7 @@ namespace SignalR.Hub
             else
                 throw new ArgumentException(message: "There are no active connections established with the hub");
         }
-        
+
         public async Task RemoveFromGroup(string groupName)
         {
             if (Context != null)
@@ -71,7 +72,7 @@ namespace SignalR.Hub
             else
                 throw new ArgumentException(message: "There are no active connections established with the hub");
         }
-          
+
 
         public IEnumerable<string> GetAllGroups()
         {
@@ -92,6 +93,6 @@ namespace SignalR.Hub
             var groupNames = groupsDictionary!.Keys.Cast<string>();
 
             return groupNames;
-        } 
+        }
     }
 }
