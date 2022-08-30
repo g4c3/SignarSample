@@ -8,5 +8,6 @@ namespace Api.Hub.Groups
         Task RemoveFromGroupAsync(IGroupManager groups, string connectionId, string groupName, CancellationToken cancellationToken = default);
         List<string> GetGroups();
         bool GroupExists(string groupName);
+
     }
 }

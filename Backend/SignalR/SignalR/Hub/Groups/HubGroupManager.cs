@@ -7,9 +7,11 @@ namespace Api.Hub.Groups
     {
         private readonly ConcurrentDictionary<string, HashSet<string>> _groups;
         private readonly object _groupsLock = new();
+
         public HubGroupManager()
         {
             _groups = _groups is null ? new()! : _groups;
+            //_members = _members is null ? new()! : _members;
         }
 
         public async Task AddToGroupAsync(IGroupManager groups, string connectionId, string groupName, CancellationToken cancellationToken = default)
@@ -46,5 +48,6 @@ namespace Api.Hub.Groups
 
         public bool GroupExists(string groupName)
             => _groups.ContainsKey(groupName);
+
     }
 }

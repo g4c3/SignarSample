@@ -1,4 +1,5 @@
 ﻿using Api.Hub.Groups;
+using Api.Hub.Users;
 using Application.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections;
@@ -10,15 +11,24 @@ namespace Api.Hub
     {
         private readonly IHubContext<ComunicationHub, IClientMethods> _hubContext;
         private readonly IHubGroupManager _hubGroupManager;
+        private readonly IHubUserManager _hubUserManager;
+
         public const string Endpoint = "/CommunicationHub";
-        public ComunicationHub(IHubContext<ComunicationHub, IClientMethods> hubContext, IHubGroupManager hubGroupManager)
+        public ComunicationHub(IHubContext<ComunicationHub, 
+            IClientMethods> hubContext,
+            IHubGroupManager hubGroupManager,
+            IHubUserManager hubUserManager)
         {
             _hubContext = hubContext;
             _hubGroupManager = hubGroupManager;
+            _hubUserManager = hubUserManager;
         }
 
-        public override async Task OnConnectedAsync() =>
+        public override async Task OnConnectedAsync()
+        {
+            _hubUserManager.AddMember(Context.ConnectionId);
             await base.OnConnectedAsync();
+        }
 
         public override async Task OnDisconnectedAsync(Exception? exception) =>
             await base.OnDisconnectedAsync(exception);
@@ -59,6 +69,7 @@ namespace Api.Hub
 
         public async Task AddToGroup(string groupName)
         {
+            var members = _hubUserManager.GetAllMembers();
             if (Context != null)
                 await _hubGroupManager.AddToGroupAsync(_hubContext.Groups, Context.ConnectionId, groupName);
             else

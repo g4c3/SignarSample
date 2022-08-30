@@ -1,10 +1,10 @@
 using Api.Hub;
 using Api.Hub.Groups;
+using Api.Hub.Users;
 using Application;
 using Application.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var services = builder.Services;
 
 const string corsAlllowedOrigin = "CorsAllowedOrigins";
@@ -18,6 +18,7 @@ services.AddSignalR(hubOptions =>
 });
 
 services.AddSingleton<IHubGroupManager, HubGroupManager>();
+services.AddSingleton<IHubUserManager, HubUserManager>();
 services.AddSingleton<IComunicationHub, ComunicationHub>();
 
 services
@@ -43,9 +44,7 @@ services.AddEndpointsApiExplorer();
 WebApplication app = builder.Build();
 
 if (!app.Environment.IsDevelopment()) 
-{
     app.UseHttpsRedirection();
-}
 
 if (app.Environment.IsDevelopment())
 {
