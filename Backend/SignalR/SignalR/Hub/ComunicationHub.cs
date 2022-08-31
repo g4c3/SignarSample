@@ -118,11 +118,11 @@ namespace Api.Hub
 
         public IEnumerable<string> GetAllClientIds()
         {
-            IGroupManager groupManager = _hubContext.Groups;
+            IHubClients<IClientMethods> clients = _hubContext.Clients;
 
-            DefaultHubLifetimeManager<ComunicationHub>? lifetimeManager = groupManager!.GetType().GetRuntimeFields()
+            DefaultHubLifetimeManager<ComunicationHub>? lifetimeManager = clients!.GetType().GetRuntimeFields()
                 .Single(fi => fi.Name == "_lifetimeManager")
-                .GetValue(groupManager)! as DefaultHubLifetimeManager<ComunicationHub>;
+                .GetValue(clients)! as DefaultHubLifetimeManager<ComunicationHub>;
 
             //groupsObject's typeis internal sealed class
             object groupsObject = lifetimeManager!.GetType().GetRuntimeFields()
