@@ -11,7 +11,6 @@ namespace Api.Hub.Groups
         public HubGroupManager()
         {
             _groups = _groups is null ? new()! : _groups;
-            //_members = _members is null ? new()! : _members;
         }
 
         public async Task AddToGroupAsync(IGroupManager groups, string connectionId, string groupName, CancellationToken cancellationToken = default)

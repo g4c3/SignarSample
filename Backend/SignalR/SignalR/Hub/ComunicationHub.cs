@@ -72,10 +72,7 @@ namespace Api.Hub
 
         public async Task AddToGroup(string connectionId, string groupName)
         {
-            //if (Context != null)
-                await _hubGroupManager.AddToGroupAsync(_hubContext.Groups, connectionId, groupName);
-            //else
-            //    throw new ArgumentException(message: "There are no active connections established with the hub");
+            await _hubGroupManager.AddToGroupAsync(_hubContext.Groups, connectionId, groupName);
         }
 
         public async Task RemoveFromGroup(string connectionId, string groupName)
