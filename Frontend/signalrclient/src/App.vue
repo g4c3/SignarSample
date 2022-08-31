@@ -5,7 +5,17 @@
   </nav>
   <router-view/>
 </template>
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { useSignalR } from '@quangdao/vue-signalr';
 
+export default defineComponent({
+  setup() {
+    const signalr = useSignalR();
+    console.log("starting connection");
+  }
+})
+</script>
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

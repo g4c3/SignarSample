@@ -1,36 +1,83 @@
 <template>
-  <div class="hello">
+  <div class="groupsList">
     <button  @click="getAllGroups()">
         Get all groups
-        {{this.allGroups}}
     </button >
+    <div v-for="(group, i) in this.allGroups" :key = i>
+      {{group}}
+    </div>
   </div>
+  <br />
+   <!-- @submit="validate" -->
+  <form class="createGroup">
+    <input v-model="connectionId" placeholder="Paste user connection Id here"/>
+    <input v-model="groupName" placeholder="Enter the group's name"/>
+     <!-- v-if="isCreateGroupInputValid" -->
+    <button @click="createNewGroup()">
+      Create Group
+    </button>
+  </form>
+  <br />
+
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useSignalR } from '@quangdao/vue-signalr';
-import { getGroups, AllGroups } from '@/modules/axios/apiclient';
+import { getGroups, createGroup, leaveGroup, IAllGroups, IGroupManagement } from '@/modules/axios/apiclient';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export default defineComponent({
   name: 'HelloWorld',
   props: {
-    msg: String
+    msg: String,
   },
   data() {
     return {
-      allGroups: {} as AllGroups
+      allGroups: [] as string[],      
+      connectionId: '' as string,
+      groupName: '' as string
+
+    }
+  },
+  computed: {
+    isCreateGroupInputValid(): boolean {
+      console.log()
+      if(this.connectionId && this.connectionId.trim() && this.groupName && this.groupName.trim())
+        return true;
+      else
+        return false;
     }
   },
   methods: {
     async getAllGroups() {
-      this.allGroups = await getGroups();
-    }
+      const allGroupsObject: IAllGroups = await getGroups();
+      this.allGroups = allGroupsObject.allGroups;
+    },
 
-  },
-  setup() {
-    const signalr = useSignalR();
-    console.log("starting connection");
+    async createNewGroup() {
+      const group: IGroupManagement = {
+        connectionId: this.connectionId,
+        groupName: this.groupName
+      };
+      // axios.defaults.baseURL = 'http://localhost:5142';
+      // await axios.post('/groups/creategroup', group)
+      // .then((response) =>{
+      //   console.log(response)
+      // })
+      // .catch((error) =>{
+      //   console.log(error)
+      // });
+      await createGroup(group);
+    },
+
+    async leaveGroup() {
+      const group: IGroupManagement = {
+        connectionId: this.connectionId,
+        groupName: this.groupName
+      };
+
+      await leaveGroup(group);
+    }
   }
 });
 </script>
