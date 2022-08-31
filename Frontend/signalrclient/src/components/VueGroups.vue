@@ -8,22 +8,29 @@
     </div>
   </div>
   <br />
-   <!-- @submit="validate" -->
-  <form class="createGroup">
+   
+  <form>
     <input v-model="connectionId" placeholder="Paste user connection Id here"/>
     <input v-model="groupName" placeholder="Enter the group's name"/>
-     <!-- v-if="isCreateGroupInputValid" -->
-    <button @click="createNewGroup()">
+    <button @click="createNewGroup()" v-if="isCreateGroupInputValid">
       Create Group
     </button>
   </form>
   <br />
 
+  <form>
+    <input v-model="connectionId" placeholder="Enter user connection Id"/>
+    <input v-model="message" placeholder="Enter message"/>
+    <button @click="notifyUser()">
+      Send Message to user
+    </button>
+  </form>
+
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { getGroups, createGroup, leaveGroup, IAllGroups, IGroupManagement } from '@/modules/axios/apiclient';
+import { getGroups, createGroup, leaveGroup, notifyUser, IAllGroups, IGroupManagement, IUserNotification } from '@/modules/axios/apiclient';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export default defineComponent({
@@ -35,7 +42,8 @@ export default defineComponent({
     return {
       allGroups: [] as string[],      
       connectionId: '' as string,
-      groupName: '' as string
+      groupName: '' as string,
+      message: '' as string
 
     }
   },
@@ -59,14 +67,7 @@ export default defineComponent({
         connectionId: this.connectionId,
         groupName: this.groupName
       };
-      // axios.defaults.baseURL = 'http://localhost:5142';
-      // await axios.post('/groups/creategroup', group)
-      // .then((response) =>{
-      //   console.log(response)
-      // })
-      // .catch((error) =>{
-      //   console.log(error)
-      // });
+
       await createGroup(group);
     },
 
@@ -77,6 +78,13 @@ export default defineComponent({
       };
 
       await leaveGroup(group);
+    },
+    async notifyUser() {
+      const notification: IUserNotification = {
+        userId: this.connectionId,
+        message: this.message
+      };
+      await notifyUser(notification)
     }
   }
 });

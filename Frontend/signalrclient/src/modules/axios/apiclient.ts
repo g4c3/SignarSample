@@ -4,19 +4,20 @@ axios.defaults.baseURL = 'http://localhost:5142';
 /*
  * Functions
  */
-export function getGroups(): Promise<IAllGroups> 
-{            
+export function getGroups(): Promise<IAllGroups> {            
     return get<IAllGroups>(`groups/getallgroups`);
 }
 
-export function createGroup(command: IGroupManagement): Promise<void> 
-{
+export function createGroup(command: IGroupManagement): Promise<void> {
     return post('/groups/creategroup', command);
 }
 
-export function leaveGroup(command: IGroupManagement): Promise<void> 
-{
+export function leaveGroup(command: IGroupManagement): Promise<void> {
     return post('/groups/leavegroup', command);
+}
+
+export function notifyUser(command: IUserNotification): Promise<void> {
+    return post('/user/notifyuser', command);
 }
 /*
  * Interfaces
@@ -29,6 +30,10 @@ export interface IAllGroups {
 export interface IGroupManagement {
     connectionId: string;
     groupName: string;
+}
+export interface IUserNotification {
+    userId: string;
+    message: string;
 }
 /* 
  * Framework 
