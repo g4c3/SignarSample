@@ -1,16 +1,15 @@
 ﻿using Application.Interfaces;
 using MediatR;
 
-namespace Application.Handlers.Group
+namespace Application.Handlers.User
 {
-    public class GetAllGroups
+    public class GetClientsCount
     {
-        //how to avoid empty request object?
         public class Request : IRequest<Response> { }
 
         public class Response
         {
-            public IEnumerable<string>? AllGroups { get; set; }
+            public int ClientsCount { get; set; }
         }
 
         public class RequestHandler : IRequestHandler<Request, Response>
@@ -22,11 +21,10 @@ namespace Application.Handlers.Group
             }
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var result = new Response { AllGroups = _notificationService.GetAllGroups() };
-
+                var result = new Response { ClientsCount = _notificationService.GetClientsCount() };
+                
                 return Task.FromResult(result);
             }
         }
-
     }
 }

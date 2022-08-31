@@ -23,13 +23,19 @@ namespace Application.Services
         public async Task NotifyGroups(IEnumerable<string> groupNames, string message) =>
             await _comunicationHub.SendMessageToGroups(groupNames, message);
 
-        public async Task CreateOrAddToExistingGroup(string groupName) =>
-            await _comunicationHub.AddToGroup(groupName);
+        public async Task CreateOrAddToExistingGroup(string connectionId, string groupName) =>
+            await _comunicationHub.AddToGroup(connectionId, groupName);
 
-        public async Task LeaveGroup(string groupName) =>
-            await _comunicationHub.RemoveFromGroup(groupName);
+        public async Task LeaveGroup(string connectionId, string groupName) =>
+            await _comunicationHub.RemoveFromGroup(connectionId, groupName);
 
         public IEnumerable<string> GetAllGroups() =>
             _comunicationHub.GetAllGroups();
+
+        public int GetClientsCount() =>
+            _comunicationHub.GetClientsCount();
+
+        public IEnumerable<string> GetAllClientIds() =>
+            _comunicationHub.GetAllClientIds();
     }
 }

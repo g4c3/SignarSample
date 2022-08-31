@@ -7,6 +7,7 @@ namespace Application.Handlers.Group
     {
         public class Request : IRequest<Unit>
         {
+            public string? ConnectionId { get; set; }
             public string? GroupName { get; set; }
         }
         public class RequestHandler : IRequestHandler<Request, Unit>
@@ -20,7 +21,7 @@ namespace Application.Handlers.Group
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                await _notificationService.LeaveGroup(request.GroupName!);
+                await _notificationService.LeaveGroup(request.ConnectionId!, request.GroupName!);
 
                 return await Task.FromResult(Unit.Value);
             }

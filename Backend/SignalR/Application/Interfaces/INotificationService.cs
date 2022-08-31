@@ -7,8 +7,10 @@
         Task NotifyAllUsers(string message);
         Task NotifyGroup(string groupName, string message);
         Task NotifyGroups(IEnumerable<string> groupNames, string message);
-        Task CreateOrAddToExistingGroup(string groupName);
-        Task LeaveGroup(string groupName);
+        Task CreateOrAddToExistingGroup(string connectionId, string groupName);
+        Task LeaveGroup(string connectionId, string groupName);
         IEnumerable<string> GetAllGroups();
+        int GetClientsCount();
+        IEnumerable<string> GetAllClientIds();
     }
 }

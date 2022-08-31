@@ -13,6 +13,21 @@ namespace Api.Controllers
         {
             _sender = sender;
         }
+        [HttpGet("GetClientsCount")]
+        public async Task<IActionResult> GetClientsCount(CancellationToken cancellationToken)
+        {
+            var response = await _sender.Send(new GetClientsCount.Request { }, cancellationToken);
+
+            return Ok(response);
+        }
+
+        [HttpGet("GetAllClientIds")]
+        public async Task<IActionResult> GetAllClientIds(CancellationToken cancellationToken)
+        {
+            var response = await _sender.Send(new GetAllClientIds.Request { }, cancellationToken);
+
+            return Ok(response);
+        }
 
         [HttpPost("NotifyUser")]
         public async Task<IActionResult> NotifyUser([FromBody] NotifyUser.Request request, CancellationToken cancellationToken)
