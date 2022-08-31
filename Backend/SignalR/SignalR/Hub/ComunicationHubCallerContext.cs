@@ -16,7 +16,7 @@ namespace Api.Hub
 
         private readonly IFeatureCollection _features;
 
-        private readonly CancellationToken _onnectionAborted;
+        //private readonly CancellationToken _onnectionAborted;
         public ComunicationHubCallerContext(HubCallerContext callerContext)
         {
             _connectionId = callerContext.ConnectionId;
@@ -24,15 +24,15 @@ namespace Api.Hub
             _user = callerContext.User;
             _items = callerContext.Items;
             _features = callerContext.Features;
-            _onnectionAborted = callerContext.ConnectionAborted;
+            //_onnectionAborted = callerContext.ConnectionAborted;
         }
 
         public string ConnectionId { get => _connectionId; }
-        public string UserIdentifier { get => _userIdentifier; }
+        public string? UserIdentifier { get => _userIdentifier; }
         public ClaimsPrincipal? User { get => _user; }
         public IDictionary<object, object?> Items { get => _items; }
         public IFeatureCollection Features {  get => _features; }
-        public CancellationToken ConnectionAborted {  get => _onnectionAborted; }
+        //public CancellationToken ConnectionAborted {  get => _onnectionAborted; }
 
         //public override void Abort()
         //{
