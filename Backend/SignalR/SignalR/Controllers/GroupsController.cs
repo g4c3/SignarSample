@@ -15,7 +15,7 @@ namespace Api.Controllers
             _sender = sender;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllGroups")]
         public async Task<IActionResult> GetGroups(CancellationToken cancellationToken)
         {
             var response = await _sender.Send(new GetAllGroups.Request { }, cancellationToken);
