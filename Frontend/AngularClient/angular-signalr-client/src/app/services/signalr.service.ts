@@ -21,9 +21,7 @@ export class SignalrService {
       this.hubConnection = new signalR.HubConnectionBuilder()    
       .configureLogging(logLevel)
       .withUrl(hubUrl)
-      .build();
-
-      
+      .build();      
        
       this.hubConnection
       .start()
@@ -47,6 +45,21 @@ export class SignalrService {
     });
 
     this.hubConnection?.on('MessageToAllUsers', (message: string) => {
+      console.log('message ' + message);
+      this.clientMessage = message;
+    });
+
+    this.hubConnection?.on('MessageToUsers', (message: string) => {
+      console.log('message ' + message);
+      this.clientMessage = message;
+    });
+    
+    this.hubConnection?.on('MessageToGroup', (message: string) => {
+      console.log('message ' + message);
+      this.clientMessage = message;
+    });
+    
+    this.hubConnection?.on('MessageToGroups', (message: string) => {
       console.log('message ' + message);
       this.clientMessage = message;
     });

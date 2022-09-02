@@ -1,4 +1,5 @@
 ﻿using Application.Handlers.Group;
+using Application.Handlers.User;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,6 +34,22 @@ namespace Api.Controllers
 
         [HttpDelete("LeaveGroup")]
         public async Task<IActionResult> LeaveGroup([FromBody] LeaveGroup.Request request, CancellationToken cancellationToken)
+        {
+            var response = await _sender.Send(request, cancellationToken);
+
+            return Ok(response);
+        }
+
+        [HttpPost("NotifyGroup")]
+        public async Task<IActionResult> NotifyGroup([FromBody] NotifyGroup.Request request, CancellationToken cancellationToken)
+        {
+            var response = await _sender.Send(request, cancellationToken);
+
+            return Ok(response);
+        }
+
+        [HttpPost("NotifyGroups")]
+        public async Task<IActionResult> NotifyGroups([FromBody] NotifyGroups.Request request, CancellationToken cancellationToken)
         {
             var response = await _sender.Send(request, cancellationToken);
 
