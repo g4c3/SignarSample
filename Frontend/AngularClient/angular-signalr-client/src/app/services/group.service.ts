@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { IAllGroups, IGroupManagement, } from '../models';
 
 @Injectable({ providedIn: 'root' })
-export class GoupService {
+export class GroupService {
 
   constructor(private readonly httpClient: HttpClient) { }
 

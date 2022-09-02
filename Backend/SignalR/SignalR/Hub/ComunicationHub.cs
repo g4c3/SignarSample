@@ -39,7 +39,8 @@ namespace Api.Hub
 
         public Task SendMessageToUser(string connectionId, string message)
         {
-            _hubContext.Clients.User(connectionId).MessageToUser(message);
+            //_hubContext.Clients.User(connectionId).MessageToUser(message); //It does not work with angular client //vue?
+            _hubContext.Clients.Client(connectionId).MessageToUser(message);
 
             return Task.CompletedTask;
         }
