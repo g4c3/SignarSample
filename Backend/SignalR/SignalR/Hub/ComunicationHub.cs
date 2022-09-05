@@ -5,136 +5,135 @@ using Microsoft.AspNetCore.SignalR;
 using System.Collections;
 using System.Reflection;
 
-namespace Api.Hub
+namespace Api.Hub;
+
+public class ComunicationHub : Hub<IClientMethods>, IComunicationHub
 {
-    public class ComunicationHub : Hub<IClientMethods>, IComunicationHub
+    private readonly IHubContext<ComunicationHub, IClientMethods> _hubContext;
+    private readonly IHubGroupManager _hubGroupManager;
+    private readonly IHubUserManager _hubUserManager;
+
+    public const string Endpoint = "/CommunicationHub";
+    public ComunicationHub(IHubContext<ComunicationHub,
+        IClientMethods> hubContext,
+        IHubGroupManager hubGroupManager,
+        IHubUserManager hubUserManager)
     {
-        private readonly IHubContext<ComunicationHub, IClientMethods> _hubContext;
-        private readonly IHubGroupManager _hubGroupManager;
-        private readonly IHubUserManager _hubUserManager;
+        _hubContext = hubContext;
+        _hubGroupManager = hubGroupManager;
+        _hubUserManager = hubUserManager;
+    }
 
-        public const string Endpoint = "/CommunicationHub";
-        public ComunicationHub(IHubContext<ComunicationHub, 
-            IClientMethods> hubContext,
-            IHubGroupManager hubGroupManager,
-            IHubUserManager hubUserManager)
-        {
-            _hubContext = hubContext;
-            _hubGroupManager = hubGroupManager;
-            _hubUserManager = hubUserManager;
-        }
+    public override async Task OnConnectedAsync()
+    {
+        _hubUserManager.AddMember(Context.ConnectionId);
+        await base.OnConnectedAsync();
+    }
 
-        public override async Task OnConnectedAsync()
-        {
-            _hubUserManager.AddMember(Context.ConnectionId);
-            await base.OnConnectedAsync();
-        }
-
-        public override async Task OnDisconnectedAsync(Exception? exception)
-        {
-            _hubUserManager.RemoveMember(Context.ConnectionId);
-            await base.OnDisconnectedAsync(exception);
-        }
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        _hubUserManager.RemoveMember(Context.ConnectionId);
+        await base.OnDisconnectedAsync(exception);
+    }
 
 
-        public Task SendMessageToUser(string connectionId, string message)
-        {
-            //_hubContext.Clients.User(connectionId).MessageToUser(message); //It does not work with angular client //vue?
-            _hubContext.Clients.Client(connectionId).MessageToUser(message);
+    public Task SendMessageToUser(string connectionId, string message)
+    {
+        //_hubContext.Clients.User(connectionId).MessageToUser(message); //It does not work with angular client //vue?
+        _hubContext.Clients.Client(connectionId).MessageToUser(message);
 
-            return Task.CompletedTask;
-        }
-        public Task SendMessageToUsers(IEnumerable<string> connectionIds, string message)
-        {
-            _hubContext.Clients.Users(connectionIds).MessageToUser(message);
+        return Task.CompletedTask;
+    }
+    public Task SendMessageToUsers(IEnumerable<string> connectionIds, string message)
+    {
+        _hubContext.Clients.Clients(connectionIds).MessageToUser(message);
 
-            return Task.CompletedTask;
-        }
-        public Task SendMessageToAllUsers(string message)
-        {
-            _hubContext.Clients.All.MessageToAllUsers(message);
+        return Task.CompletedTask;
+    }
+    public Task SendMessageToAllUsers(string message)
+    {
+        _hubContext.Clients.All.MessageToAllUsers(message);
 
-            return Task.CompletedTask;
-        }
-
-
-        public Task SendMessageToGroup(string groupName, string message)
-        {
-            _hubContext.Clients.Group(groupName).MessageToGroup(message);
-
-            return Task.CompletedTask;
-        }
-        public Task SendMessageToGroups(IEnumerable<string> groupNames, string message)
-        {
-            _hubContext.Clients.Groups(groupNames).MessageToGroup(message);
-
-            return Task.CompletedTask;
-        }
-
-        public async Task AddToGroup(string connectionId, string groupName)
-        {
-            await _hubGroupManager.AddToGroupAsync(_hubContext.Groups, connectionId, groupName);
-        }
-
-        public async Task RemoveFromGroup(string connectionId, string groupName)
-        {
-            await _hubGroupManager.RemoveFromGroupAsync(_hubContext.Groups, connectionId, groupName);
-        }
+        return Task.CompletedTask;
+    }
 
 
-        public IEnumerable<string> GetAllGroups()
-        {
-            IGroupManager groupManager = _hubContext.Groups;
+    public Task SendMessageToGroup(string groupName, string message)
+    {
+        _hubContext.Clients.Group(groupName).MessageToGroup(message);
 
-            DefaultHubLifetimeManager<ComunicationHub>? lifetimeManager = groupManager!.GetType().GetRuntimeFields()
-                .Single(fi => fi.Name == "_lifetimeManager")
-                .GetValue(groupManager)! as DefaultHubLifetimeManager<ComunicationHub>;
+        return Task.CompletedTask;
+    }
+    public Task SendMessageToGroups(IEnumerable<string> groupNames, string message)
+    {
+        _hubContext.Clients.Groups(groupNames).MessageToGroup(message);
 
-            //groupsObject's type is internal sealed class and cannot be used here
-            object groupsObject = lifetimeManager!.GetType().GetRuntimeFields()
-                .Single(fi => fi.Name == "_groups")
-                .GetValue(lifetimeManager)!;
+        return Task.CompletedTask;
+    }
 
-            IDictionary? groupsDictionary = groupsObject!.GetType().GetRuntimeFields()
-                .Single(fi => fi.Name == "_groups")
-                .GetValue(groupsObject) as IDictionary;
-            
-            return groupsDictionary!.Keys.Cast<string>();
-        }
+    public async Task AddToGroup(string connectionId, string groupName)
+    {
+        await _hubGroupManager.AddToGroupAsync(_hubContext.Groups, connectionId, groupName);
+    }
 
-        public int GetClientsCount()
-        {
-            IHubClients<IClientMethods> clients = _hubContext.Clients;
+    public async Task RemoveFromGroup(string connectionId, string groupName)
+    {
+        await _hubGroupManager.RemoveFromGroupAsync(_hubContext.Groups, connectionId, groupName);
+    }
 
-            DefaultHubLifetimeManager<ComunicationHub>? lifetimeManager = clients!.GetType().GetRuntimeFields()
-                .Single(fi => fi.Name == "_lifetimeManager")
-                .GetValue(clients)! as DefaultHubLifetimeManager<ComunicationHub>;
 
-            HubConnectionStore? connections = lifetimeManager!.GetType().GetRuntimeFields()
-                .Single(fi => fi.Name == "_connections")
-                .GetValue(lifetimeManager)! as HubConnectionStore;
+    public IEnumerable<string> GetAllGroups()
+    {
+        IGroupManager groupManager = _hubContext.Groups;
 
-            return connections!.Count;
-        }
+        DefaultHubLifetimeManager<ComunicationHub>? lifetimeManager = groupManager!.GetType().GetRuntimeFields()
+            .Single(fi => fi.Name == "_lifetimeManager")
+            .GetValue(groupManager)! as DefaultHubLifetimeManager<ComunicationHub>;
 
-        public IEnumerable<string> GetAllClientIds()
-        {
-            IHubClients<IClientMethods> clients = _hubContext.Clients;
+        //groupsObject's type is internal sealed class and cannot be used here
+        object groupsObject = lifetimeManager!.GetType().GetRuntimeFields()
+            .Single(fi => fi.Name == "_groups")
+            .GetValue(lifetimeManager)!;
 
-            DefaultHubLifetimeManager<ComunicationHub>? lifetimeManager = clients!.GetType().GetRuntimeFields()
-                .Single(fi => fi.Name == "_lifetimeManager")
-                .GetValue(clients)! as DefaultHubLifetimeManager<ComunicationHub>;
+        IDictionary? groupsDictionary = groupsObject!.GetType().GetRuntimeFields()
+            .Single(fi => fi.Name == "_groups")
+            .GetValue(groupsObject) as IDictionary;
 
-            //groupsObject's typeis internal sealed class
-            object groupsObject = lifetimeManager!.GetType().GetRuntimeFields()
-                .Single(fi => fi.Name == "_connections")
-                .GetValue(lifetimeManager)!;
+        return groupsDictionary!.Keys.Cast<string>();
+    }
 
-            IDictionary? groupsDictionary = groupsObject!.GetType().GetRuntimeFields()
-                .Single(fi => fi.Name == "_connections")
-                .GetValue(groupsObject) as IDictionary;
+    public int GetClientsCount()
+    {
+        IHubClients<IClientMethods> clients = _hubContext.Clients;
 
-            return groupsDictionary!.Keys.Cast<string>();
-        }
+        DefaultHubLifetimeManager<ComunicationHub>? lifetimeManager = clients!.GetType().GetRuntimeFields()
+            .Single(fi => fi.Name == "_lifetimeManager")
+            .GetValue(clients)! as DefaultHubLifetimeManager<ComunicationHub>;
+
+        HubConnectionStore? connections = lifetimeManager!.GetType().GetRuntimeFields()
+            .Single(fi => fi.Name == "_connections")
+            .GetValue(lifetimeManager)! as HubConnectionStore;
+
+        return connections!.Count;
+    }
+
+    public IEnumerable<string> GetAllClientIds()
+    {
+        IHubClients<IClientMethods> clients = _hubContext.Clients;
+
+        DefaultHubLifetimeManager<ComunicationHub>? lifetimeManager = clients!.GetType().GetRuntimeFields()
+            .Single(fi => fi.Name == "_lifetimeManager")
+            .GetValue(clients)! as DefaultHubLifetimeManager<ComunicationHub>;
+
+        //groupsObject's typeis internal sealed class
+        object groupsObject = lifetimeManager!.GetType().GetRuntimeFields()
+            .Single(fi => fi.Name == "_connections")
+            .GetValue(lifetimeManager)!;
+
+        IDictionary? groupsDictionary = groupsObject!.GetType().GetRuntimeFields()
+            .Single(fi => fi.Name == "_connections")
+            .GetValue(groupsObject) as IDictionary;
+
+        return groupsDictionary!.Keys.Cast<string>();
     }
 }

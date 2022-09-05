@@ -43,7 +43,7 @@ services.AddEndpointsApiExplorer();
 
 WebApplication app = builder.Build();
 
-if (!app.Environment.IsDevelopment()) 
+if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 
 if (app.Environment.IsDevelopment())

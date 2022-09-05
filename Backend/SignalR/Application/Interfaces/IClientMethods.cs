@@ -1,11 +1,10 @@
-﻿namespace Application.Interfaces
+﻿namespace Application.Interfaces;
+
+public interface IClientMethods
 {
-    public interface IClientMethods
-    {
-        Task MessageToUser(string message);
-        Task MessageToUsers(List<string> connectionIds, string message);
-        Task MessageToAllUsers(string message);
-        Task MessageToGroup(string message);
-        Task MessageToGroups(string message, List<string> groupNames);
-    }
+    Task MessageToUser(string message);
+    Task MessageToUsers(List<string> connectionIds, string message);
+    Task MessageToAllUsers(string message);
+    Task MessageToGroup(string message);
+    Task MessageToGroups(string message, List<string> groupNames);
 }

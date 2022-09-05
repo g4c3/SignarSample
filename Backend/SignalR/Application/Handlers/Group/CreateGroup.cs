@@ -1,30 +1,26 @@
 ﻿using Application.Interfaces;
 using MediatR;
 
-namespace Application.Handlers.Group
+namespace Application.Handlers.Group;
+
+public class CreateGroup
 {
-    public class CreateGroup
+    public class Request : IRequest<Unit>
     {
-        public class Request : IRequest<Unit>
+        public string? ConnectionId { get; set; }
+        public string? GroupName { get; set; }
+    }
+
+    public class RequestHandler : IRequestHandler<Request, Unit>
+    {
+        private readonly INotificationService _notificationService;
+
+        public RequestHandler(INotificationService notificationService) => _notificationService = notificationService;
+
+        public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
         {
-            public string? ConnectionId { get; set; }
-            public string? GroupName { get; set; }
-        }
-
-        public class RequestHandler : IRequestHandler<Request, Unit>
-        {
-            private readonly INotificationService _notificationService;
-
-            public RequestHandler(INotificationService notificationService)
-            {
-                _notificationService = notificationService;
-            }
-
-            public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
-            {
-                await _notificationService.CreateOrAddToExistingGroup(request.ConnectionId!, request.GroupName!);
-                return await Task.FromResult(Unit.Value);
-            }
+            await _notificationService.CreateOrAddToExistingGroup(request.ConnectionId!, request.GroupName!);
+            return await Task.FromResult(Unit.Value);
         }
     }
 }

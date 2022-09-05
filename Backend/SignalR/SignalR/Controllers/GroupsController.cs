@@ -3,57 +3,53 @@ using Application.Handlers.User;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers
+namespace Api.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class GroupsController : Controller
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class GroupsController : Controller
+    private readonly ISender _sender;
+
+    public GroupsController(ISender sender) => _sender = sender;
+
+    [HttpGet("GetAllGroups")]
+    public async Task<IActionResult> GetGroups(CancellationToken cancellationToken)
     {
-        private readonly ISender _sender;
+        var response = await _sender.Send(new GetAllGroups.Request { }, cancellationToken);
 
-        public GroupsController(ISender sender)
-        {
-            _sender = sender;
-        }
+        return Ok(response);
+    }
 
-        [HttpGet("GetAllGroups")]
-        public async Task<IActionResult> GetGroups(CancellationToken cancellationToken)
-        {
-            var response = await _sender.Send(new GetAllGroups.Request { }, cancellationToken);
+    [HttpPost("CreateGroup")]
+    public async Task<IActionResult> CreateGroup([FromBody] CreateGroup.Request request, CancellationToken cancellationToken)
+    {
+        var response = await _sender.Send(request, cancellationToken);
 
-            return Ok(response);
-        }
+        return Ok(response);
+    }
 
-        [HttpPost("CreateGroup")]
-        public async Task<IActionResult> CreateGroup([FromBody] CreateGroup.Request request, CancellationToken cancellationToken)
-        {
-            var response = await _sender.Send(request, cancellationToken);
+    [HttpDelete("LeaveGroup")]
+    public async Task<IActionResult> LeaveGroup([FromBody] LeaveGroup.Request request, CancellationToken cancellationToken)
+    {
+        var response = await _sender.Send(request, cancellationToken);
 
-            return Ok(response);
-        }
+        return Ok(response);
+    }
 
-        [HttpDelete("LeaveGroup")]
-        public async Task<IActionResult> LeaveGroup([FromBody] LeaveGroup.Request request, CancellationToken cancellationToken)
-        {
-            var response = await _sender.Send(request, cancellationToken);
+    [HttpPost("NotifyGroup")]
+    public async Task<IActionResult> NotifyGroup([FromBody] NotifyGroup.Request request, CancellationToken cancellationToken)
+    {
+        var response = await _sender.Send(request, cancellationToken);
 
-            return Ok(response);
-        }
+        return Ok(response);
+    }
 
-        [HttpPost("NotifyGroup")]
-        public async Task<IActionResult> NotifyGroup([FromBody] NotifyGroup.Request request, CancellationToken cancellationToken)
-        {
-            var response = await _sender.Send(request, cancellationToken);
+    [HttpPost("NotifyGroups")]
+    public async Task<IActionResult> NotifyGroups([FromBody] NotifyGroups.Request request, CancellationToken cancellationToken)
+    {
+        var response = await _sender.Send(request, cancellationToken);
 
-            return Ok(response);
-        }
-
-        [HttpPost("NotifyGroups")]
-        public async Task<IActionResult> NotifyGroups([FromBody] NotifyGroups.Request request, CancellationToken cancellationToken)
-        {
-            var response = await _sender.Send(request, cancellationToken);
-
-            return Ok(response);
-        }
+        return Ok(response);
     }
 }
