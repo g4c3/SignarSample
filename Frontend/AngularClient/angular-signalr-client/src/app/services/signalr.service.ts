@@ -8,64 +8,63 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class SignalrService {
   connectionEstablished$ = new BehaviorSubject<boolean>(false);
   incomingMessage$ = new Subject<string>();
+
   private hubConnection: signalR.HubConnection | undefined;
+  private hubUrl = 'http://localhost:5142/CommunicationHub';
+  private logLevel = signalR.LogLevel.Debug;
 
-  constructor() {}
+  constructor() {
+    this.createSignalrConnection();
+    this.setSignalrClientMethods();
+    this.startConnection();
+  }
 
-  initializeHubConnection(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (this.hubConnection !== undefined) {
-        throw new Error('the signalr connection has already been initialized.');
-      }
-      const hubUrl = 'http://localhost:5142/CommunicationHub';
-      const logLevel = signalR.LogLevel.Debug;
-  
-      this.hubConnection = new signalR.HubConnectionBuilder()    
-      .configureLogging(logLevel)
-      .withUrl(hubUrl)
+  private createSignalrConnection() {
+    this.hubConnection = new signalR.HubConnectionBuilder()    
+      .configureLogging(this.logLevel)
+      .withUrl(this.hubUrl)
       .withAutomaticReconnect()
-      .build();      
-       
-      this.hubConnection
-      .start()
-      .then(() => { 
-        console.log('Connection started');
-        resolve(true);
-      })
-      .catch(err => {
-        console.log('Error while starting connection: ' + err);
-        reject();
-      });
-
-      this.setSignalrClientMethods();
-    })
+      .build();
   }
 
   private setSignalrClientMethods(): void {
     this.hubConnection?.on('MessageToUser', (message: string) => {
-      // console.log('message ' + message);
       this.incomingMessage$.next(message);
     });
 
     this.hubConnection?.on('MessageToAllUsers', (message: string) => {
-      // console.log('message ' + message);
       this.incomingMessage$.next(message);
     });
 
     this.hubConnection?.on('MessageToUsers', (message: string) => {
-      // console.log('message ' + message);
       this.incomingMessage$.next(message);
     });
     
     this.hubConnection?.on('MessageToGroup', (message: string) => {
-      // console.log('message ' + message);
       this.incomingMessage$.next(message);
     });
     
     this.hubConnection?.on('MessageToGroups', (message: string) => {
-      // console.log('message ' + message);
       this.incomingMessage$.next(message);
     });
+  }
+
+  private startConnection(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (this.hubConnection!.state === signalR.HubConnectionState.Connected) {
+        return;
+      }
+      this.hubConnection!
+        .start()
+        .then(() => { 
+          console.log('Connection started');
+          resolve(true);
+        })
+        .catch(err => {
+          console.log('Error while starting connection: ' + err);
+          reject();
+        });
+    })
   }
 
   public getConnectionId(): string | undefined {
@@ -74,6 +73,4 @@ export class SignalrService {
     else
       return '';  
   }
-
-  
 }

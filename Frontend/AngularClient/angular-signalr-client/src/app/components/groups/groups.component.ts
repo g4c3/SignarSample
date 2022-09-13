@@ -16,10 +16,9 @@ export class GroupsComponent implements OnInit {
   constructor(
     private readonly groupService: GroupService,
     private readonly signalrService: SignalrService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.signalrService.initializeHubConnection();
     this.signalrService.incomingMessage$.subscribe((message) => {
       this.chatmessages = [...this.chatmessages, message];
       console.log(this.chatmessages);
@@ -28,7 +27,6 @@ export class GroupsComponent implements OnInit {
   getGroups(): void{
     this.groupService.getAllGroups().subscribe((groups: IAllGroups) => {
       this.allGroups = groups.allGroups;
-      console.log(this.allGroups);
     });
   }
   leaveGroup(groupName: string): void {
