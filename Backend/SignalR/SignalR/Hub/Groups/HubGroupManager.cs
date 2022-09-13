@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System.Collections;
 using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace Api.Hub.Groups;
 
@@ -7,7 +9,7 @@ public class HubGroupManager : IHubGroupManager
 {
     private readonly ConcurrentDictionary<string, HashSet<string>> _groups;
     private readonly object _groupsLock = new();
-
+    
     public HubGroupManager() => _groups = _groups is null ? new()! : _groups;
 
     public async Task AddToGroupAsync(IGroupManager groups, string connectionId, string groupName, CancellationToken cancellationToken = default)
@@ -44,5 +46,23 @@ public class HubGroupManager : IHubGroupManager
 
     public bool GroupExists(string groupName)
         => _groups.ContainsKey(groupName);
+
+    public IEnumerable<string> GetAllGroups(IGroupManager groupManager)
+    {
+        DefaultHubLifetimeManager<ComunicationHub>? lifetimeManager = groupManager!.GetType().GetRuntimeFields()
+            .Single(fi => fi.Name == "_lifetimeManager")
+            .GetValue(groupManager)! as DefaultHubLifetimeManager<ComunicationHub>;
+
+        //groupsObject's type is internal sealed class and cannot be used here
+        object groupsObject = lifetimeManager!.GetType().GetRuntimeFields()
+            .Single(fi => fi.Name == "_groups")
+            .GetValue(lifetimeManager)!;
+
+        IDictionary? groupsDictionary = groupsObject!.GetType().GetRuntimeFields()
+            .Single(fi => fi.Name == "_groups")
+            .GetValue(groupsObject) as IDictionary;
+
+        return groupsDictionary!.Keys.Cast<string>();
+    }
 
 }

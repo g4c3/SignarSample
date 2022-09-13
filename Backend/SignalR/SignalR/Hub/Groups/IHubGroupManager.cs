@@ -8,5 +8,6 @@ public interface IHubGroupManager
     Task RemoveFromGroupAsync(IGroupManager groups, string connectionId, string groupName, CancellationToken cancellationToken = default);
     List<string> GetGroups();
     bool GroupExists(string groupName);
+    IEnumerable<string> GetAllGroups(IGroupManager groupManager);
 
 }

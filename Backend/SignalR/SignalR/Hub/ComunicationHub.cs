@@ -71,36 +71,16 @@ public class ComunicationHub : Hub<IClientMethods>, IComunicationHub
         return Task.CompletedTask;
     }
 
-    public async Task AddToGroup(string connectionId, string groupName)
-    {
+    public async Task AddToGroup(string connectionId, string groupName)=>
         await _hubGroupManager.AddToGroupAsync(_hubContext.Groups, connectionId, groupName);
-    }
+  
 
-    public async Task RemoveFromGroup(string connectionId, string groupName)
-    {
+    public async Task RemoveFromGroup(string connectionId, string groupName) =>
         await _hubGroupManager.RemoveFromGroupAsync(_hubContext.Groups, connectionId, groupName);
-    }
+    
 
-
-    public IEnumerable<string> GetAllGroups()
-    {
-        IGroupManager groupManager = _hubContext.Groups;
-
-        DefaultHubLifetimeManager<ComunicationHub>? lifetimeManager = groupManager!.GetType().GetRuntimeFields()
-            .Single(fi => fi.Name == "_lifetimeManager")
-            .GetValue(groupManager)! as DefaultHubLifetimeManager<ComunicationHub>;
-
-        //groupsObject's type is internal sealed class and cannot be used here
-        object groupsObject = lifetimeManager!.GetType().GetRuntimeFields()
-            .Single(fi => fi.Name == "_groups")
-            .GetValue(lifetimeManager)!;
-
-        IDictionary? groupsDictionary = groupsObject!.GetType().GetRuntimeFields()
-            .Single(fi => fi.Name == "_groups")
-            .GetValue(groupsObject) as IDictionary;
-
-        return groupsDictionary!.Keys.Cast<string>();
-    }
+    public IEnumerable<string> GetAllGroups() => 
+        _hubGroupManager.GetAllGroups(_hubContext.Groups);
 
     public int GetClientsCount()
     {
@@ -125,7 +105,7 @@ public class ComunicationHub : Hub<IClientMethods>, IComunicationHub
             .Single(fi => fi.Name == "_lifetimeManager")
             .GetValue(clients)! as DefaultHubLifetimeManager<ComunicationHub>;
 
-        //groupsObject's typeis internal sealed class
+        //groupsObject's type is internal sealed class and cant be used as type
         object groupsObject = lifetimeManager!.GetType().GetRuntimeFields()
             .Single(fi => fi.Name == "_connections")
             .GetValue(lifetimeManager)!;
