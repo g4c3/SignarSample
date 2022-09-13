@@ -13,10 +13,10 @@ export class GroupService {
   }
 
   createGroup(group: IGroupManagement): Observable<unknown> {
-    return this.httpClient.post(`groups/creategroup`, { group });
+    return this.httpClient.post(`groups/creategroup`, group );
   }
 
   leaveGroup(group: IGroupManagement): Observable<unknown> {
-    return this.httpClient.post(`groups/leavegroup`, { group });
+    return this.httpClient.delete<any>(`groups/leavegroup/`, {body: group} );
   }
 }
