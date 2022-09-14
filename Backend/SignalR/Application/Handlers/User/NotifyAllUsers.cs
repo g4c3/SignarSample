@@ -9,6 +9,9 @@ public class NotifyAllUsers
     public class Request : IRequest<Unit>
     {
         [Required]
+        public string? SenderId { get; set; }
+
+        [Required]
         public string? Message { get; set; }
     }
 

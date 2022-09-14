@@ -9,6 +9,9 @@ public class NotifySelectedUsers
     public class Request : IRequest<Unit>
     {
         [Required]
+        public string? SenderId { get; set; }
+
+        [Required]
         public IEnumerable<string>? UserIds { get; set; }
         [Required]
         public string? Message { get; set; }

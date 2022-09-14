@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using MediatR;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.Handlers.User;
 
@@ -7,7 +8,11 @@ public class NotifyUser
 {
     public class Request : IRequest<Unit>
     {
+        [Required]
+        public string? SenderId { get; set; }
+        [Required]
         public string? UserId { get; set; }
+        [Required]
         public string? Message { get; set; }
     }
 

@@ -1,4 +1,6 @@
 export interface IUserNotification {
-    userId: string;
+    senderId: string;
+    userId?: string;
+    userIds?: string[];
     message: string;
 }
