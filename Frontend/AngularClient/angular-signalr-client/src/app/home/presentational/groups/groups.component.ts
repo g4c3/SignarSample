@@ -21,7 +21,6 @@ export class GroupsComponent implements OnInit {
   ngOnInit(): void {
     this.signalrService.incomingMessage$.subscribe((message) => {
       this.chatmessages = [...this.chatmessages, message];
-      console.log(this.chatmessages);
     })
   }
   getGroups(): void{

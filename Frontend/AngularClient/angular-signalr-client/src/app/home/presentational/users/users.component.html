@@ -32,3 +32,9 @@
     <p><input type="text" name="message" #message></p>
     <button (click)="notifySelectedUsers(this.selectedUsers, message.value)">Send message</button>
 </div>
+
+<div>
+    <ul *ngIf="this.chatmessages">
+        <li *ngFor="let message of this.chatmessages; let index = index">{{ message }}</li>
+    </ul>
+</div>
