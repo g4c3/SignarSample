@@ -37,7 +37,8 @@ export class UsersComponent implements OnInit {
       userId: toUser,
       message: message
     };
-    this.usersService.notifyUser(notification);
+    console.log(notification)
+    this.usersService.notifyUser(notification).subscribe();
   }
 
   notifyAllUsers(message: string) {
@@ -45,7 +46,7 @@ export class UsersComponent implements OnInit {
       senderId: this.signalrService.getConnectionId() as string,
       message: message
     };
-    this.usersService.notifyAllUsers(notification);
+    this.usersService.notifyAllUsers(notification).subscribe();
   }
 
   notifySelectedUsers(selctedUsers: string[], message: string) {
@@ -54,7 +55,7 @@ export class UsersComponent implements OnInit {
       userIds: selctedUsers,
       message: message
     };
-    this.usersService.notifySelectedUsers(notification);
+    this.usersService.notifySelectedUsers(notification).subscribe();
   }
   
   addToSelectedUserIds(userId: string): void {

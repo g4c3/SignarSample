@@ -1,19 +1,19 @@
 <h1>Groups</h1>
 <div>
     <button (click)="getGroups()">Get groups</button>
-    <p>{{this.allGroups}}</p>
+    <ul *ngIf="this.allGroups">
+        <li *ngFor="let user of this.allGroups; let index = index">Group name {{ user }}</li>
+    </ul>
 </div>
 <div>
     <h3>Enter the group that you wish to join or create</h3>
     <p><input type="text" name="groupToLeave" #groupToJoin></p>
-    <h1> {{groupToJoin.value}}</h1>
     <button (click)="joinGroup(groupToJoin.value)">Join Group</button>
 </div>
 
 <div>
     <h3>Enter the group name that you wish to leave</h3>
     <p><input type="text" name="groupToLeave" #groupToLeave></p>
-    <h1> {{groupToLeave.value}}</h1>
     <button (click)="leaveGroup(groupToLeave.value)">Leave Group</button>
 </div>
 
