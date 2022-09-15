@@ -12,11 +12,11 @@ export class UsersComponent implements OnInit {
   chatmessages : string[] = [];
   allUsers: string[] = [];
   selectedUsers: string[] = [];
+  userConnectionId: string = this.signalrService.getConnectionId() as string;
 
   constructor(
     private readonly signalrService: SignalrService,
     private readonly usersService: UsersService,
-
   ) { }
 
   ngOnInit(): void {
