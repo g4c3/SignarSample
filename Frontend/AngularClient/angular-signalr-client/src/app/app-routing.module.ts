@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GroupsComponent } from './components/groups/groups.component';
+import { GroupsComponent, DashboardComponent } from './components';
 
-const routes: Routes = [{
-  path: '',
-  component: GroupsComponent
-}];
+const routes: Routes = [
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'dashboard', loadChildren: () => DashboardComponent },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

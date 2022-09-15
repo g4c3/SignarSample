@@ -5,13 +5,15 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; //HttpClient, ?
 import { ApiUrlInterceptor } from './interceptors/api-url.interceptor';
 import { EnvironmentService, GroupService,  } from './services';
-import { UsersComponent, GroupsComponent } from './components';
+// import { UsersComponent, GroupsComponent } from './components';
+// import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GroupsComponent,
-    UsersComponent
+    // GroupsComponent,
+    // UsersComponent,
+    // DashboardComponent
   ],
   imports: [
     BrowserModule,
