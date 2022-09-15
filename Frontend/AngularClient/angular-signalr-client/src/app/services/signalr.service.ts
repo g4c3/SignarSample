@@ -20,6 +20,12 @@ export class SignalrService {
   }
 
   private createSignalrConnection() {
+    if(this.hubConnection === undefined){
+      console.log("connection undefined")
+    } else {
+      console.log("connection exists")
+
+    }
     this.hubConnection = new signalR.HubConnectionBuilder()    
       .configureLogging(this.logLevel)
       .withUrl(this.hubUrl)

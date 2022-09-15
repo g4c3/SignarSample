@@ -11,18 +11,18 @@ export class UsersService {
   constructor(private readonly httpClient: HttpClient) { }
 
   getAllClientIds(): Observable<IAllUsers> {
-    return this.httpClient.get<IAllUsers>(`users/getallclientids`);
+    return this.httpClient.get<IAllUsers>(`user/getallclientids`);
   }
 
   notifyUser(notification: IUserNotification): Observable<unknown> {
-    return this.httpClient.post(`users/notifyuser`, notification);
+    return this.httpClient.post(`user/notifyuser`, notification);
   }
   
   notifyAllUsers(notification: IUserNotification): Observable<unknown> {
-    return this.httpClient.post(`users/notifyallusers`, notification);
+    return this.httpClient.post(`user/notifyallusers`, notification);
   }
 
   notifySelectedUsers(notification: IUserNotification): Observable<unknown> {
-    return this.httpClient.post(`users/notifselectedlusers`, notification);
+    return this.httpClient.post(`user/notifselectedlusers`, notification);
   }
 }

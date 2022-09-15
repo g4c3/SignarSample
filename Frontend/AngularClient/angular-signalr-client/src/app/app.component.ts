@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SignalrService } from 'src/app/services';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-signalr-client';
+
+  constructor(private readonly signalRService: SignalrService) {}
 }

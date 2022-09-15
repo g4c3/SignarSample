@@ -11,6 +11,7 @@ import { IAllUsers, IUserNotification } from 'src/app/models';
 export class UsersComponent implements OnInit {
   chatmessages : string[] = [];
   allUsers: string[] = [];
+  selectedUsers: string[] = [];
 
   constructor(
     private readonly signalrService: SignalrService,
@@ -30,9 +31,10 @@ export class UsersComponent implements OnInit {
     })
   }
   
-  notifyUser(message: string) {
+  notifyUser(toUser: string, message: string) {
     const notification: IUserNotification = {
-      senderId: this.signalrService.getConnectionId() as string,
+      senderId: this.signalrService.getConnectionId() as string,      
+      userId: toUser,
       message: message
     };
     this.usersService.notifyUser(notification);
@@ -46,12 +48,23 @@ export class UsersComponent implements OnInit {
     this.usersService.notifyAllUsers(notification);
   }
 
-  notifySelectedUsers(message: string, selctedUsers: string[]) {
+  notifySelectedUsers(selctedUsers: string[], message: string) {
     const notification: IUserNotification = {
       senderId: this.signalrService.getConnectionId() as string,
       userIds: selctedUsers,
       message: message
     };
     this.usersService.notifySelectedUsers(notification);
+  }
+  
+  addToSelectedUserIds(userId: string): void {
+    this.selectedUsers.push(userId);
+  }
+
+  removeFromSelectedUserIds(userId: string): void {
+    const index = this.selectedUsers.indexOf(userId);
+    if (index !== -1) {
+      this.selectedUsers.splice(index, 1);
+    }
   }
 }

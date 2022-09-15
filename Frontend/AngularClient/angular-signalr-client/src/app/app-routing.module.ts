@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GroupsComponent } from './components/groups/groups.component';
 
-const routes: Routes = [{
-  path: '',
-  component: GroupsComponent
-}];
+const routes: Routes = [
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'dashboard', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

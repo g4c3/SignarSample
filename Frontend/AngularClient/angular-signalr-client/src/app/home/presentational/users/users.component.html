@@ -1,0 +1,34 @@
+<h1>Users</h1>
+<div>
+    <button (click)="getUsers()">Get all connected clients</button>
+    <ul>
+        <li *ngFor="let user of this.allUsers; let index = index">User id {{ user }}</li>
+    </ul>
+</div>
+<div>
+    <h3>Enter message and client id</h3>
+    <p><input type="text" name="clientIUd" #clientId></p>
+    <p><input type="text" name="message" #message></p>
+    <button (click)="notifyUser(clientId.value, message.value)">Send message</button>
+</div>
+
+<div>
+    <h3>Enter message and client id</h3>
+    <p><input type="text" name="message" #message></p>
+    <button (click)="notifyAllUsers(message.value)">Send message</button>
+</div>
+
+<div>
+    <h3>Enter message and client id</h3>
+    <div>
+        <h3>Add or remove user id</h3>
+        <p><input type="text" name="clientId" #clientId></p>
+        <button (click)="addToSelectedUserIds(clientId.value)">Add</button>
+        <button (click)="removeFromSelectedUserIds(clientId.value)">Remove</button>
+        <ul>
+            <li *ngFor="let user of this.selectedUsers; let index = index">User id {{ user }}</li>
+        </ul>
+    </div>
+    <p><input type="text" name="message" #message></p>
+    <button (click)="notifySelectedUsers(this.selectedUsers, message.value)">Send message</button>
+</div>

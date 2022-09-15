@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GroupService } from '../../services/group.service';
+import { GroupService } from 'src/app/services/group.service';
 import { SignalrService } from 'src/app/services';
 import { IAllGroups, IGroupManagement } from 'src/app/models';
 
