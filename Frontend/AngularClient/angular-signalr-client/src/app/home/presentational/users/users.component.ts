@@ -27,7 +27,7 @@ export class UsersComponent implements OnInit {
 
   getUsers() {
     this.usersService.getAllClientIds().subscribe((users: IAllUsers) => {
-      this.allUsers = users.allusers;
+      this.allUsers = users.allClients;
     })
   }
   

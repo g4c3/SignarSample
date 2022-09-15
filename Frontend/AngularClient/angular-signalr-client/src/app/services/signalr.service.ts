@@ -63,7 +63,6 @@ export class SignalrService {
       this.hubConnection!
         .start()
         .then(() => { 
-          console.log('Connection started');
           resolve(true);
         })
         .catch(err => {

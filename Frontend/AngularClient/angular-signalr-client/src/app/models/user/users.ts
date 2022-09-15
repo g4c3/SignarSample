@@ -1,3 +1,3 @@
 export interface IAllUsers {
-    allusers: string[];
+    allClients: string[];
 }

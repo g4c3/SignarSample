@@ -1,9 +1,10 @@
 <h1>Users</h1>
 <div>
     <button (click)="getUsers()">Get all connected clients</button>
-    <ul>
+    <p>{{this.allUsers}}</p>
+    <!-- <ul *ngIf="this.allUsers">
         <li *ngFor="let user of this.allUsers; let index = index">User id {{ user }}</li>
-    </ul>
+    </ul> -->
 </div>
 <div>
     <h3>Enter message and client id</h3>
